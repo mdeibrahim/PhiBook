@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
 from .serializers import RegisterSerializer, LoginSerializer
 import uuid
-from apps.users.models import EmailVerificationToken
+from apps.users.models import EmailVerificationToken, CustomUser
 from datetime import timedelta
 from django.utils.timezone import now
 
@@ -44,7 +44,8 @@ class VerifyAccountView(APIView):
         if token_object.created_at + timedelta(minutes=15) < now():
             return Response({"error": "Verification token has expired."}, status=status.HTTP_400_BAD_REQUEST)
         
-        if token_object.ip_address != ip_address or token_object.user_agent != user_agent:
+        # if token_object.ip_address != ip_address or token_object.user_agent != user_agent:
+        if token_object.ip_address != ip_address:
             return Response ({'error':'This device is not allowed to verify this account.'},status=status.HTTP_403_FORBIDDEN)
         
         token_object.user.is_active=True
@@ -56,6 +57,7 @@ class VerifyAccountView(APIView):
         return Response({"message": "Account verified successfully. You can now login."},status=status.HTTP_200_OK)
 
 class LoginView(APIView):
+    permission_classes = [permissions.AllowAny]
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
