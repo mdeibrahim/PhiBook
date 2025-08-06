@@ -19,7 +19,7 @@ class RegisterView(APIView):
             user.token = uuid.uuid4().hex
             user.save()
             return Response({
-                "status": "true",
+                "status": "success",
                 "status_code": status.HTTP_201_CREATED,
                 "message": "User registered. Please check email to verify account.",
                 "data": {
@@ -29,7 +29,12 @@ class RegisterView(APIView):
                     "token": user.token,
                 }
             }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "status": "error",
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "message": "Registration failed.",
+            "errors-message": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyAccountView(APIView):
@@ -42,19 +47,30 @@ class VerifyAccountView(APIView):
 
 
         if token_object.created_at + timedelta(minutes=15) < now():
-            return Response({"error": "Verification token has expired."}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response({
+                "status": "error",
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "error-message": "Verification token has expired."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         # if token_object.ip_address != ip_address or token_object.user_agent != user_agent:
         if token_object.ip_address != ip_address:
-            return Response ({'error':'This device is not allowed to verify this account.'},status=status.HTTP_403_FORBIDDEN)
-        
+            return Response({
+                "status": "error",
+                "status_code": status.HTTP_403_FORBIDDEN,
+                "error": "This device is not allowed to verify this account."
+            }, status=status.HTTP_403_FORBIDDEN)
+
         token_object.user.is_active=True
         token_object.user.save()
         token_object.is_used=True
         token_object.save()
 
-        
-        return Response({"message": "Account verified successfully. You can now login."},status=status.HTTP_200_OK)
+        return Response({
+            "status": "success",
+            "status_code": status.HTTP_200_OK,
+            "message": "Account verified successfully. You can now login."
+        }, status=status.HTTP_200_OK)
 
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -63,12 +79,24 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data
             token, _ = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "status": "success",
+                "status_code": status.HTTP_200_OK,
+                "token": token.key
+            }, status=status.HTTP_200_OK)
+        return Response({
+            "status": "error",
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "errors-message": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         request.user.auth_token.delete()
-        return Response({"message": "Logged out successfully."})
+        return Response({
+            "status": "success",
+            "status_code": status.HTTP_200_OK,
+            "message": "Logged out successfully."
+        }, status=status.HTTP_200_OK)
