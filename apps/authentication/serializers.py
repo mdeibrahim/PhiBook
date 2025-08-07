@@ -19,7 +19,26 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, data):
-        user = authenticate(email=data['email'], password=data['password'])
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError("Invalid credentials or account not active.")
+        email = data.get('email')
+        password = data.get('password')
+
+        # Step 1: Check if user exists
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("User not found.")
+
+        # Step 2: Check password
+        if not user.check_password(password):
+            raise serializers.ValidationError("Invalid password.")
+
+        # Step 3: Check if active
+        if not user.is_active:
+            raise serializers.ValidationError("Account not active. Please verify your email.")
+
+        # Step 4: Authenticate (for DRF tokens or sessions)
+        user = authenticate(email=email, password=password)
+        if not user:
+            raise serializers.ValidationError("Unable to authenticate user.")
+
+        return user
