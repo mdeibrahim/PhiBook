@@ -105,7 +105,6 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Comment.objects.all()
 
     def get_permissions(self):
-        # For update/delete operations, check if user owns the comment
         if self.request.method in ['PUT', 'PATCH', 'DELETE']:
             return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
