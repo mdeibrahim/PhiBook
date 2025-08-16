@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('post_app', '0003_like_reaction_type'),
+        ('dashboard', '0003_like_reaction_type'),
     ]
 
     operations = [
