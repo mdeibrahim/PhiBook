@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     #local apps
     'apps.authentication',
     'apps.users',
-    'apps.post_app',
+    'apps.dashboard',
 ]
 
 MIDDLEWARE = [

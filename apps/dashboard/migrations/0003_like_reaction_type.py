@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('post_app', '0002_post_video_url'),
+        ('dashboard', '0002_post_video_url'),
     ]
 
     operations = [
