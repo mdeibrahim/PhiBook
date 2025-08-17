@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.vercel.app,.now.sh').split(',')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -23,6 +23,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +58,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'PhiBook.urls'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATIC_FILES_DIR=BASE_DIR / 'static'
+STATICFIELS_STORAGE="whitenoise.storage.CompressedStaticFilesStorage"
 
 TEMPLATES = [
     {
@@ -72,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'PhiBook.wsgi.application'
+WSGI_APPLICATION = 'PhiBook.wsgi.app'
 
 
 # Database
