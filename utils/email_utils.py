@@ -1,10 +1,9 @@
 from django.core.mail import send_mail
 from django.conf import settings
-from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 
-def send_verification_email(user, verification_url):
+def send_verification_email(user, verification_link):
     """
     Send account verification email to user
     """
@@ -17,9 +16,9 @@ def send_verification_email(user, verification_url):
             <h2>Welcome to PhiBook!</h2>
             <p>Hi {user.email.split('@')[0]},</p>
             <p>Thank you for registering with PhiBook. Please click the link below to verify your account:</p>
-            <p><a href="{verification_url}">Verify Account</a></p>
-            <p>If the link doesn't work, copy and paste this URL into your browser:</p>
-            <p>{verification_url}</p>
+            <p><a href="{verification_link}">Verify Account</a></p>
+            <p>If the link doesn't work, copy and paste this link into your browser:</p>
+            <p>{verification_link}</p>
             <p>This link will expire in 24 hours.</p>
             <p>Best regards,<br>The PhiBook Team</p>
         </body>
