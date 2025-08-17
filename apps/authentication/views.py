@@ -10,9 +10,15 @@ from datetime import timedelta
 from django.utils.timezone import now
 
 class RegisterView(APIView):
+    """
+    User registration endpoint.
+    
+    Creates a new user account with email verification.
+    """
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
+        
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -73,8 +79,15 @@ class VerifyAccountView(APIView):
         }, status=status.HTTP_200_OK)
 
 class LoginView(APIView):
+    """
+    User login endpoint.
+    
+    Authenticates user credentials and returns an authentication token.
+    """
     permission_classes = [permissions.AllowAny]
+    
     def post(self, request):
+       
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
