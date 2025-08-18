@@ -7,6 +7,13 @@ from .serializers import PostSerializer, CommentSerializer
 
 
 class CreatePostView(APIView):
+    """
+    Create a new post with text, image, or video.
+    
+    **Authentication:** Required
+    **Request Body:** text (required), image (optional), video_url (optional)
+    **Response:** Created post data or validation errors
+    """
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -29,6 +36,14 @@ class CreatePostView(APIView):
     
 
 class UpdatePostView(APIView):
+    """
+    Update an existing post (owner only).
+    
+    **Authentication:** Required
+    **URL Parameters:** pk (post ID)
+    **Request Body:** text, image, or video_url (all optional)
+    **Response:** Updated post data or errors
+    """
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -51,6 +66,13 @@ class UpdatePostView(APIView):
         }, status=400)
     
 class DeletePostView(APIView):
+    """
+    Delete a post (owner only).
+    
+    **Authentication:** Required
+    **URL Parameters:** pk (post ID)
+    **Response:** Success message or authorization error
+    """
     permission_classes = [permissions.IsAuthenticated]
     
     def delete(self, request, pk):
@@ -71,6 +93,12 @@ class DeletePostView(APIView):
 
 
 class ViewMyPostsView(APIView):
+    """
+    Retrieve current user's posts.
+    
+    **Authentication:** Required
+    **Response:** List of user's posts or 404 if none found
+    """
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -92,6 +120,12 @@ class ViewMyPostsView(APIView):
     
 
 class ViewAllPostsView(APIView):
+    """
+    Retrieve all posts from all users.
+    
+    **Authentication:** Required
+    **Response:** List of all posts
+    """
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -108,7 +142,7 @@ class ViewAllPostsView(APIView):
     
 class ViewAllPostsView(APIView):
     serializer_class = PostSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request):
         posts = Post.objects.all()
@@ -128,6 +162,13 @@ class ViewAllPostsView(APIView):
 
 
 class LikeUnlikeView(APIView):
+    """
+    Like or unlike a post.
+    
+    **Authentication:** Required
+    **Request Body:** reaction_type (string): 'like' or 'unlike'
+    **Response:** Success message with updated like counts
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
@@ -162,6 +203,13 @@ class LikeUnlikeView(APIView):
 
 
 class AddCommentView(APIView):
+    """
+    Add a comment to a post.
+    
+    **Authentication:** Required
+    **Request Body:** comment (string): Comment text
+    **Response:** Created comment data
+    """
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -178,7 +226,7 @@ class AddCommentView(APIView):
                 "status_code": 200,
                 "message": "Comment added successfully",
                 "data": serializer.data
-            })
+            }, status=200)
         return Response({
             "status": "error",
             "status_code": 400,
@@ -188,6 +236,13 @@ class AddCommentView(APIView):
     
 
 class UpdateCommentView(APIView):
+    """
+    Update a comment.
+    
+    **Authentication:** Required
+    **Request Body:** comment (string): Updated comment text
+    **Response:** Updated comment data
+    """
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -197,11 +252,11 @@ class UpdateCommentView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({
-                "status": "success",
-                "status_code": 200,
-                "message": "Comment updated successfully",
-                "data": serializer.data
-            })
+            "status": "success",
+            "status_code": 200,
+            "message": "Comment updated successfully",
+            "data": serializer.data
+        }, status=200)
         return Response({
             "status": "error",
             "status_code": 400,
@@ -210,6 +265,12 @@ class UpdateCommentView(APIView):
         }, status=400)
     
 class DeleteCommentView(APIView):
+    """
+    Delete a comment.
+    
+    **Authentication:** Required
+    **Response:** Success message
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def delete(self, request, pk):
@@ -219,10 +280,16 @@ class DeleteCommentView(APIView):
             "status": "success",
             "status_code": 200,
             "message": "Comment deleted successfully"
-        })
+        }, status=200)
     
 
 class ViewAllCommentsView(APIView):
+    """
+    Retrieve all comments for a specific post.
+    
+    **Authentication:** Required
+    **Response:** List of comments ordered by creation date
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
@@ -234,5 +301,5 @@ class ViewAllCommentsView(APIView):
             "status_code": 200,
             "message": "Comments retrieved successfully",
             "data": serializer.data
-        })
+        }, status=200)
 

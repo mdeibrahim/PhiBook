@@ -11,9 +11,10 @@ from django.utils.timezone import now
 
 class RegisterView(APIView):
     """
-    User registration endpoint.
+    User registration with email verification.
     
-    Creates a new user account with email verification.
+    **Request Body:** email, password, password_confirm
+    **Response:** User data or validation errors
     """
     permission_classes = [permissions.AllowAny]
 
@@ -38,13 +39,20 @@ class RegisterView(APIView):
         return Response({
             "status": "error",
             "status_code": status.HTTP_400_BAD_REQUEST,
-            "message": "Registration failed.",
-            "errors-message": serializer.errors
+            "message": "Registration failed",
+            "errors": serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyAccountView(APIView):
+    """
+    Email verification using token.
+    
+    **URL Parameters:** token (UUID)
+    **Response:** Success message or error details
+    """
     permission_classes = [permissions.AllowAny]
+    
     def get(self, request, token):
         user_agent = request.META.get('HTTP_USER_AGENT', '')
         ip_address = request.META.get('REMOTE_ADDR')
@@ -56,7 +64,7 @@ class VerifyAccountView(APIView):
             return Response({
                 "status": "error",
                 "status_code": status.HTTP_400_BAD_REQUEST,
-                "error-message": "Verification token has expired."
+                "message": "Verification token has expired."
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # if token_object.ip_address != ip_address or token_object.user_agent != user_agent:
@@ -64,7 +72,7 @@ class VerifyAccountView(APIView):
             return Response({
                 "status": "error",
                 "status_code": status.HTTP_403_FORBIDDEN,
-                "error": "This device is not allowed to verify this account."
+                "message": "This device is not allowed to verify this account."
             }, status=status.HTTP_403_FORBIDDEN)
 
         token_object.user.is_active=True
@@ -80,9 +88,10 @@ class VerifyAccountView(APIView):
 
 class LoginView(APIView):
     """
-    User login endpoint.
+    User authentication with token return.
     
-    Authenticates user credentials and returns an authentication token.
+    **Request Body:** email, password
+    **Response:** Authentication token or validation errors
     """
     permission_classes = [permissions.AllowAny]
     
@@ -95,15 +104,25 @@ class LoginView(APIView):
             return Response({
                 "status": "success",
                 "status_code": status.HTTP_200_OK,
-                "token": token.key
+                "message": "Login successful",
+                "data": {
+                    "token": token.key
+                }
             }, status=status.HTTP_200_OK)
         return Response({
             "status": "error",
             "status_code": status.HTTP_400_BAD_REQUEST,
-            "errors-message": serializer.errors
+            "message": "Login failed",
+            "errors": serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
 
 class LogoutView(APIView):
+    """
+    Invalidate authentication token.
+    
+    **Authentication:** Required
+    **Response:** Success message
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
