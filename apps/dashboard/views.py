@@ -142,7 +142,7 @@ class ViewAllPostsView(APIView):
     
 class ViewAllPostsView(APIView):
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         posts = Post.objects.all()

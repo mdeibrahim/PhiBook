@@ -8,6 +8,8 @@ import uuid
 from apps.users.models import EmailVerificationToken, CustomUser
 from datetime import timedelta
 from django.utils.timezone import now
+from drf_spectacular.utils import extend_schema
+from rest_framework import serializers
 
 class RegisterView(APIView):
     """
@@ -95,8 +97,11 @@ class LoginView(APIView):
     """
     permission_classes = [permissions.AllowAny]
     
+    @extend_schema(
+        request=LoginSerializer
+    )
+
     def post(self, request):
-       
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
