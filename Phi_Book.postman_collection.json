@@ -67,7 +67,7 @@
 							"query": [
 								{
 									"key": "",
-									"value": "",
+									"value": "<token>",
 									"disabled": true
 								}
 							]
@@ -83,7 +83,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "a9a828a8b22361301ea996ac3f9b70c4e058092f",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -131,7 +131,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -168,7 +168,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -213,7 +213,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -259,7 +259,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -300,7 +300,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -332,7 +332,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -360,7 +360,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"value": "Token <tokrn>",
 								"type": "text"
 							}
 						],
@@ -391,7 +391,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -430,7 +430,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -468,7 +468,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -507,7 +507,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
@@ -553,7 +553,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"value": "Token <token>",
 								"type": "text"
 							}
 						],
