@@ -12,8 +12,8 @@ urlpatterns = [
     path('posts/<int:pk>/like-unlike/', LikeUnlikeView.as_view(), name='like-unlike'),
 
     path('add-comment/<int:pk>/', AddCommentView.as_view(), name='add-comment'),
-    path('update-comment/<int:pk>/', UpdateCommentView.as_view(), name='update-comment'),
-    path('delete-comment/<int:pk>/', DeleteCommentView.as_view(), name='delete-comment'),
+    path('update-comment/<int:post_pk>/<int:pk>/', UpdateCommentView.as_view(), name='update-comment'),
+    path('delete-comment/<int:post_pk>/<int:pk>/', DeleteCommentView.as_view(), name='delete-comment'),
     
     path('view-all-comments/<int:pk>/', ViewAllCommentsView.as_view(), name='view-all-comments'),
 ]

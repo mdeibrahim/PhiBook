@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "c2e0a988-8188-4326-9190-88b9b44c9227",
+		"name": "Phi_Book",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45112248",
+		"_collection_link": "https://mdeibrahimmolla.postman.co/workspace/dc195ab0-c486-46c1-81e8-36822f15abdf/collection/45112248-c2e0a988-8188-4326-9190-88b9b44c9227?action=share&source=collection_link&creator=45112248"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"yotiwo4582@misehub.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}register/",
+							"host": [
+								"{{base_url}}register"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-email",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "PostmanRuntime/7.39.0",
+								"type": "text"
+							},
+							{
+								"key": "REMOTE_ADDR",
+								"value": "localhost IP: 127.0.0.1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}verify/b1417ff3-09af-499e-bd4d-ccf267e93078/",
+							"host": [
+								"{{base_url}}verify"
+							],
+							"path": [
+								"b1417ff3-09af-499e-bd4d-ccf267e93078",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "a9a828a8b22361301ea996ac3f9b70c4e058092f",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin1@gmail.com\",\r\n    \"password\": \"pb123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}login/",
+							"host": [
+								"{{base_url}}login"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "View own profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"yotiwo4582@misehub.com\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}profile/",
+							"host": [
+								"{{base_url}}profile"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\":\"Mr Been213\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}profile-update/",
+							"host": [
+								"{{base_url}}profile-update"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"item": [
+				{
+					"name": "add a post",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "cat",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "postman-cloud:///1f07c5dd-07f6-4ce0-adf7-74495316773e"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base-url}}create-post/",
+							"host": [
+								"{{base-url}}create-post"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-post",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\":\"mr been 3, good morning\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}update-post/1/",
+							"host": [
+								"{{base-url}}update-post"
+							],
+							"path": [
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-post",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base-url}}delete-post/1/",
+							"host": [
+								"{{base-url}}delete-post"
+							],
+							"path": [
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view-my-post",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base-url}}view-my-posts/",
+							"host": [
+								"{{base-url}}view-my-posts"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view all posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token 9a5afe0500b11453c82178bc26fbf9fec85efd58",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}view-all-posts/",
+							"host": [
+								"{{base_url}}view-all-posts"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like - Unlike",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"reaction_type\": \"unlike\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}posts/2/like-unlike/",
+							"host": [
+								"{{base_url}}posts"
+							],
+							"path": [
+								"2",
+								"like-unlike",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\":\"very good22 \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}add-comment/2/",
+							"host": [
+								"{{base_url}}add-comment"
+							],
+							"path": [
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comments",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\":\"very good too \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}update-comment/2/2/",
+							"host": [
+								"{{base_url}}update-comment"
+							],
+							"path": [
+								"2",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comments",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\":\"very good too \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/delete-comment/1/1/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"delete-comment",
+								"1",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All comments of a post",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token b6e22a376e9fc43209fd3894c100632ea298e815",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}view-all-comments/2/",
+							"host": [
+								"{{base_url}}view-all-comments"
+							],
+							"path": [
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
