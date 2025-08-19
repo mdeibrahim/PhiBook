@@ -17,8 +17,14 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app']
 
-AUTH_USER_MODEL = 'users.CustomUser'
+# CSRF: values must include scheme and be a list/tuple
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://*.vercel.app',
+]
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 INSTALLED_APPS = [

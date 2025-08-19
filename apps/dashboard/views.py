@@ -1,3 +1,4 @@
+from sqlite3 import connect
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -172,7 +173,13 @@ class LikeUnlikeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
+        post = Post.objects.filter(pk=pk).first()
+        if not post:
+            return Response({
+                "status": "error",
+                "status_code": 404,
+                "error_message": "Post not found"
+            }, status=404)
         reaction_type = request.data.get('reaction_type')
 
         if reaction_type not in ['like', 'unlike']:
@@ -198,7 +205,7 @@ class LikeUnlikeView(APIView):
                 "total_likes": post.total_likes,
                 "total_unlikes": post.total_unlikes
             }
-        })
+        }, status=200)
 
 
 
@@ -214,10 +221,16 @@ class AddCommentView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             post_id = self.kwargs['pk']
-            post = get_object_or_404(Post, pk=post_id)
+            post = Post.objects.filter( pk=post_id).first()
+            if not post:
+                return Response({
+                "status": "error",
+                "status_code": 404,
+                "error_message": "Post not found"
+            }, status=404)
             
             serializer.save(user=request.user, post=post)
             
@@ -246,8 +259,23 @@ class UpdateCommentView(APIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def put(self, request, pk):
-        comment = get_object_or_404(Comment, pk=pk)
+    def put(self, request, post_pk, pk):
+        post = Post.objects.filter(pk=post_pk).first()
+        if not post:
+            return Response({
+                "status": "error",
+                "status_code": 404,
+                "error_message": "post not found"
+            }, status=404)
+
+        comment = Comment.objects.filter(pk=pk, post=post).first()
+        if not comment:
+            return Response({
+                "status": "error",
+                "status_code": 404,
+                "error_message": "Comment not found"
+            }, status=404)
+
         serializer = self.serializer_class(comment, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -273,8 +301,23 @@ class DeleteCommentView(APIView):
     """
     permission_classes = [permissions.IsAuthenticated]
 
-    def delete(self, request, pk):
-        comment = get_object_or_404(Comment, pk=pk)
+    def delete(self, request, post_pk, pk):
+        post = Post.objects.filter(pk=post_pk).first()
+        if not post:
+            return Response({
+                "status": "error",
+                "status_code": 404,
+                "error_message": "post not found"
+            }, status=404)
+
+        comment = Comment.objects.filter(pk=pk, post=post).first()
+        if not comment:
+            return Response({
+                "status": "error",
+                "status_code": 404,
+                "error_message": "Comment not found"
+            }, status=404)
+            
         comment.delete()
         return Response({
             "status": "success",
@@ -293,7 +336,14 @@ class ViewAllCommentsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
+        post = Post.objects.filter(pk=pk).first()
+        if not post:
+            return Response({
+                "status": "error",
+                "status_code": 404,
+                "error_message": "Post not found"
+            }, status=404)
+
         comments = Comment.objects.filter(post=post).order_by('-created_at')
         serializer = CommentSerializer(comments, many=True)
         return Response({

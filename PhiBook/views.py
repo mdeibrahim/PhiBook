@@ -20,7 +20,7 @@ class RootApiView(APIView):
         api_endpoints = {
             "authentication": {
                 "description": "User authentication endpoints",
-                "url": f"{base_url}/api/",
+                "url": f"{base_url}/api/v1/",
                 "endpoints": [
                     "register",
                     "login", 
@@ -30,7 +30,7 @@ class RootApiView(APIView):
             },
             "users": {
                 "description": "User management endpoints",
-                "url": f"{base_url}/api/",
+                "url": f"{base_url}/api/v1/",
                 "endpoints": [
                     "profile",
                     "profile-update"
@@ -38,7 +38,7 @@ class RootApiView(APIView):
             },
             "dashboard": {
                 "description": "Social media dashboard endpoints",
-                "url": f"{base_url}/api/",
+                "url": f"{base_url}/api/v1/",
                 "endpoints": [
                     "create-post",
                     "update-post/<int:pk>",
@@ -55,8 +55,8 @@ class RootApiView(APIView):
             "documentation": {
                 "description": "API documentation",
                 "endpoints": [
-                    f"{base_url}/api/docs/",
-                    f"{base_url}/api/redoc/"
+                    f"{base_url}/api/v1/docs/",
+                    f"{base_url}/api/v1/redoc/"
                 ]
             }
         }
@@ -69,8 +69,8 @@ class RootApiView(APIView):
                 "name": "PhiBook API",
                 "version": "1.0.0",
                 "description": "A social media platform API built with Django REST Framework",
-                "base_url": f"{base_url}/api/",
-                "documentation": f"{base_url}/api/docs/"
+                "base_url": f"{base_url}/api/v1/",
+                "documentation": f"{base_url}/api/v1/docs/"
             },
             "available_endpoints": api_endpoints,
             "usage": {
