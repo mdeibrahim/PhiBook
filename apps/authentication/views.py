@@ -20,6 +20,10 @@ class RegisterView(APIView):
     """
     permission_classes = [permissions.AllowAny]
 
+    @extend_schema(
+        request=RegisterSerializer,
+    )
+    
     def post(self, request):
         
         serializer = RegisterSerializer(data=request.data)
@@ -70,6 +74,7 @@ class VerifyAccountView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # if token_object.ip_address != ip_address or token_object.user_agent != user_agent:
+        
         if token_object.ip_address != ip_address:
             return Response({
                 "status": "error",
