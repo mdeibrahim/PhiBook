@@ -100,14 +100,14 @@ WSGI_APPLICATION = 'PhiBook.wsgi.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres.ywyhmfebvqchilxhufet',
-        'PASSWORD': 'pb123',
-        'HOST': 'aws-1-ap-southeast-1.pooler.supabase.com',
-        'PORT': '6543',
+        'ENGINE': config('DATABASE_ENGINE'),
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
+        'HOST': config('DATABASE_HOST'),
+        'PORT': config('DATABASE_PORT'),
         'OPTIONS': {
-            'sslmode': 'require',  # Ensures encrypted connection
+            'sslmode': config('DATABASE_SSLMODE'),
         },
     }
 }
