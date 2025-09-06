@@ -11,6 +11,61 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
+# @receiver(post_save, sender=CustomUser)
+# def send_verification_email_signal(sender, instance, created, **kwargs):
+#     if created and not instance.is_active:
+#         request = get_current_request()
+#         ip = request.META.get('REMOTE_ADDR', '0.0.0.0') if request else '0.0.0.0'
+#         user_agent = request.META.get('HTTP_USER_AGENT', '') if request else ''
+
+#         token = EmailVerificationToken.objects.create(
+#             user=instance,
+#             ip_address=ip,
+#             user_agent=user_agent
+#         )
+#         if request is not None:
+#             verify_url = request.build_absolute_uri(
+#                 reverse('verify_email', kwargs={'token': token.token})
+#             )
+#         else:
+#             # Fallback for cases where request is not available
+#             verify_url = f"/api/v1/verify/{token.token}/"
+#         send_verification_email(instance, verify_url)
+
+def get_frontend_url(request=None):
+    """
+    Determine the frontend URL based on the current environment
+    """
+    import os
+    
+    # Check environment variable first
+    env_frontend_url = os.environ.get('FRONTEND_URL')
+    if env_frontend_url:
+        return env_frontend_url
+    
+    # If request is available, try to detect from the request
+    if request:
+        current_domain = request.get_host()
+        
+        # Development
+        if 'localhost' in current_domain or '127.0.0.1' in current_domain:
+            return 'http://localhost:5173'
+        
+        # Staging
+        elif 'staging' in current_domain:
+            return 'https://your-staging-frontend.com'
+        
+        # Production
+        elif 'your-production-domain' in current_domain:
+            return 'https://your-production-frontend.com'
+        
+        # Default fallback
+        else:
+            return f"https://{current_domain.replace('api.', '')}"
+    
+    # Final fallback
+    return 'http://localhost:5173'
+
 @receiver(post_save, sender=CustomUser)
 def send_verification_email_signal(sender, instance, created, **kwargs):
     if created and not instance.is_active:
@@ -23,11 +78,9 @@ def send_verification_email_signal(sender, instance, created, **kwargs):
             ip_address=ip,
             user_agent=user_agent
         )
-        if request is not None:
-            verify_url = request.build_absolute_uri(
-                reverse('verify_email', kwargs={'token': token.token})
-            )
-        else:
-            # Fallback for cases where request is not available
-            verify_url = f"/api/v1/verify/{token.token}/"
+        
+        # Get the appropriate frontend URL
+        frontend_url = get_frontend_url(request)
+        verify_url = f"{frontend_url}/verify/{token.token}/"
+        
         send_verification_email(instance, verify_url)
