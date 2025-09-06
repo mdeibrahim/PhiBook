@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .models import Post, Like, Comment
-from .serializers import PostSerializer, CommentSerializer
+from .serializers import PostSerializer, CommentSerializer, UserSerializer
 
 
 class CreatePostView(APIView):
@@ -353,3 +353,21 @@ class ViewAllCommentsView(APIView):
             "data": serializer.data
         }, status=200)
 
+class UserDataView(APIView):
+    """
+    Retrieve user data.
+    
+    **Authentication:** Required
+    **Response:** User data
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response({
+            "status": "success",
+            "status_code": 200,
+            "message": "User data retrieved successfully",
+            "data": serializer.data
+        }, status=200)

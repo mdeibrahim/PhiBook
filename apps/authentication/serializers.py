@@ -3,14 +3,24 @@ from apps.users.models import CustomUser
 from django.contrib.auth import authenticate
 
 class RegisterSerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(write_only=True)
+    
     class Meta:
         model = CustomUser
-        fields = ('email', 'password')
+        fields = ('email', 'password', 'name', 'confirm_password')
         extra_kwargs = {
             'password': {'write_only': True},
+            'name': {'required': False, 'allow_blank': True},
         }
 
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError("Passwords don't match.")
+        return data
+
     def create(self, validated_data):
+        # Remove confirm_password from validated_data before creating user
+        validated_data.pop('confirm_password')
         user = CustomUser.objects.create_user(**validated_data)
         return user
 
