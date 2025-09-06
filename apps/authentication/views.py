@@ -10,6 +10,8 @@ from datetime import timedelta
 from django.utils.timezone import now
 from drf_spectacular.utils import extend_schema
 from rest_framework import serializers
+from django.shortcuts import redirect
+from django.conf import settings
 
 class RegisterView(APIView):
     """
@@ -50,48 +52,79 @@ class RegisterView(APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
+# class VerifyAccountView(APIView):
+#     """
+#     Email verification using token.
+    
+#     **URL Parameters:** token (UUID)
+#     **Response:** Success message or error details
+#     """
+#     permission_classes = [permissions.AllowAny]
+    
+#     def get(self, request, token):
+#         user_agent = request.META.get('HTTP_USER_AGENT', '')
+#         ip_address = request.META.get('REMOTE_ADDR')
+
+#         token_object = get_object_or_404(EmailVerificationToken, token=token, is_used=False)
+
+
+#         if token_object.created_at + timedelta(minutes=15) < now():
+#             return Response({
+#                 "status": "error",
+#                 "status_code": status.HTTP_400_BAD_REQUEST,
+#                 "message": "Verification token has expired."
+#             }, status=status.HTTP_400_BAD_REQUEST)
+
+#         # if token_object.ip_address != ip_address or token_object.user_agent != user_agent:
+        
+#         if token_object.ip_address != ip_address:
+#             return Response({
+#                 "status": "error",
+#                 "status_code": status.HTTP_403_FORBIDDEN,
+#                 "message": "This device is not allowed to verify this account."
+#             }, status=status.HTTP_403_FORBIDDEN)
+
+#         token_object.user.is_active=True
+#         token_object.user.save()
+#         token_object.is_used=True
+#         token_object.save()
+
+#         return Response({
+#             "status": "success",
+#             "status_code": status.HTTP_200_OK,
+#             "message": "Account verified successfully. You can now login."
+#         }, status=status.HTTP_200_OK)
 class VerifyAccountView(APIView):
     """
-    Email verification using token.
-    
-    **URL Parameters:** token (UUID)
-    **Response:** Success message or error details
+    Email verification using token with redirect to frontend.
     """
     permission_classes = [permissions.AllowAny]
-    
+
     def get(self, request, token):
         user_agent = request.META.get('HTTP_USER_AGENT', '')
         ip_address = request.META.get('REMOTE_ADDR')
 
         token_object = get_object_or_404(EmailVerificationToken, token=token, is_used=False)
 
-
+        # check expiry
         if token_object.created_at + timedelta(minutes=15) < now():
-            return Response({
-                "status": "error",
-                "status_code": status.HTTP_400_BAD_REQUEST,
-                "message": "Verification token has expired."
-            }, status=status.HTTP_400_BAD_REQUEST)
+            redirect_url = f"{settings.FRONTEND_URL}/verify-result?status=error&message=Verification token has expired."
+            return redirect(redirect_url)
 
-        # if token_object.ip_address != ip_address or token_object.user_agent != user_agent:
-        
+        # check ip / device
         if token_object.ip_address != ip_address:
-            return Response({
-                "status": "error",
-                "status_code": status.HTTP_403_FORBIDDEN,
-                "message": "This device is not allowed to verify this account."
-            }, status=status.HTTP_403_FORBIDDEN)
+            redirect_url = f"{settings.FRONTEND_URL}/verify-result?status=error&message=This device is not allowed to verify this account."
+            return redirect(redirect_url)
 
-        token_object.user.is_active=True
+        # activate user
+        token_object.user.is_active = True
         token_object.user.save()
-        token_object.is_used=True
+        token_object.is_used = True
         token_object.save()
 
-        return Response({
-            "status": "success",
-            "status_code": status.HTTP_200_OK,
-            "message": "Account verified successfully. You can now login."
-        }, status=status.HTTP_200_OK)
+        # success redirect
+        redirect_url = f"{settings.FRONTEND_URL}/verify-result?status=success&message=Account verified successfully. You can now login."
+        return redirect(redirect_url)
 
 class LoginView(APIView):
     """
