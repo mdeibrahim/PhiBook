@@ -1,6 +1,7 @@
 
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,12 +89,28 @@ WSGI_APPLICATION = 'PhiBook.wsgi.app'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Database configuration - Force SQLite for local development
+# Uncomment the lines below and comment out the SQLite config when ready for production
+# DATABASE_URL = config("DATABASE_URL", default=None)
+# if DATABASE_URL:
+#     DATABASES = {
+#         'default': dj_database_url.config(default=DATABASE_URL)
+#     }
+# else:
+
+# Use SQLite for local development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
