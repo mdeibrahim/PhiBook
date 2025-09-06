@@ -142,3 +142,14 @@ class LogoutView(APIView):
             "status_code": status.HTTP_200_OK,
             "message": "Logged out successfully."
         }, status=status.HTTP_200_OK)
+
+
+# views.py
+from django.http import HttpResponse
+from django.core.management import call_command
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def run_migrate(request):
+    call_command('migrate', interactive=False)
+    return HttpResponse("Migrations applied successfully!")
