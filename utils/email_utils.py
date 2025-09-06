@@ -17,8 +17,7 @@ def send_verification_email(user, verification_link):
             <p>Hi {user.email.split('@')[0]},</p>
             <p>Thank you for registering with PhiBook. Please click the link below to verify your account:</p>
             <p><a href="{verification_link}">Verify Account</a></p>
-            <p>If the link doesn't work, copy and paste this link into your browser:</p>
-            <p>{verification_link}</p>
+            
             <p>This link will expire in 24 hours.</p>
             <p>Best regards,<br>The PhiBook Team</p>
         </body>
