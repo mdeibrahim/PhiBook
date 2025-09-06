@@ -35,7 +35,7 @@ def send_verification_email_signal(sender, instance, created, **kwargs):
 
         if getattr(settings, "FRONTEND_URL", None):
             # ✅ আগে frontend URL ইউজ করবে
-            verify_url = f"{settings.FRONTEND_URL}/verify/{token.token}/"
+            verify_url = f"{settings.FRONTEND_URL}/api/v1/verify/{token.token}/"
         elif request is not None:
             # ❌ frontend নাই, তাহলে backend URL নেবে
             verify_url = request.build_absolute_uri(
@@ -43,7 +43,7 @@ def send_verification_email_signal(sender, instance, created, **kwargs):
             )
         else:
             # সবশেষ fallback (very rare case)
-            verify_url = f"/verify/{token.token}/"
+            verify_url = f"/api/v1/verify/{token.token}/"
 
         send_verification_email(instance, verify_url)
 
