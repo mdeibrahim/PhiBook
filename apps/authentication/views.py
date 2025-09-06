@@ -112,9 +112,9 @@ class VerifyAccountView(APIView):
             return redirect(redirect_url)
 
         # check ip / device
-        if token_object.ip_address != ip_address:
-            redirect_url = f"{settings.FRONTEND_URL}/verify-result?status=error&message=This device is not allowed to verify this account."
-            return redirect(redirect_url)
+        # if token_object.ip_address != ip_address:
+        #     redirect_url = f"{settings.FRONTEND_URL}/verify-result?status=error&message=This device is not allowed to verify this account."
+        #     return redirect(redirect_url)
 
         # activate user
         token_object.user.is_active = True
