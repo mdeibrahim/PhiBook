@@ -7,13 +7,12 @@ from .models import Profile
 from .serializers import ProfileSerializer
 
 
-class UserProfileView(APIView):
+class ViewUserProfileView(APIView):
     """
-    User profile management (GET/PUT).
+    User profile management (GET).
     
     **Authentication:** Required
     **GET:** Retrieve profile data
-    **PUT:** Update profile (full_name, date_of_birth, bio, profile_picture)
     **Response:** Profile data or errors
     """
     permission_classes = [IsAuthenticated]  
@@ -37,6 +36,42 @@ class UserProfileView(APIView):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
+    
+    def put(self, request):
+        try:
+            profile = Profile.objects.get(user=request.user)
+            serializer = ProfileSerializer(profile, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "status": "success",
+                    "status_code": 200,
+                    "message": "Profile updated successfully",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
+            return Response({
+                "status": "error",
+                "status_code": 400,
+                "message": "Invalid data provided",
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        except Profile.DoesNotExist:
+            return Response({
+                "status": "error",
+                "status_code": 404,
+                "message": "Profile not found"
+            }, status=status.HTTP_404_NOT_FOUND)
+
+
+class UpdateProfileView(APIView):
+    """
+    Update profile (full_name, date_of_birth, bio, profile_picture)
+
+    **Authentication:** Required
+    **Request Body:** full_name, date_of_birth, bio, profile_picture
+    **Response:** Profile data or errors
+    """
+    permission_classes = [IsAuthenticated]
     
     def put(self, request):
         try:
