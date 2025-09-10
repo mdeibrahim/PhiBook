@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from decouple import config
 import dj_database_url
@@ -30,6 +29,8 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
+    'cloudinary_storage',
+    'cloudinary',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -210,3 +211,13 @@ EMAIL_VERIFICATION_TIMEOUT = 24
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+MEDIA_URL = '/media/'
