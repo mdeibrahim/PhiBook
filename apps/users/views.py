@@ -20,7 +20,7 @@ class ViewUserProfileView(APIView):
     def get(self, request):
         try:
             profile = Profile.objects.get(user=request.user)
-            serializer = ProfileSerializer(profile)
+            serializer = ProfileSerializer(profile, context={'request': request})
             return Response({
                 "status": "success",
                 "status_code": 200,

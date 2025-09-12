@@ -8,10 +8,20 @@ class ProfileSerializer(serializers.ModelSerializer):
             'invalid': 'Date of birth must be in format: DD-MM-YYYY'
         }
     )
+    profile_picture_url = serializers.SerializerMethodField()
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'full_name','username', 'profile_picture', 'date_of_birth', 'location', 'phone_number', 'bio']
+        fields = ['id', 'user', 'full_name','username', 'profile_picture', 'profile_picture_url', 'date_of_birth', 'location', 'phone_number', 'bio']
         read_only_fields = ['id', 'user']
+
+    def get_profile_picture_url(self, obj):
+        request = self.context.get('request')
+        if obj.profile_picture:
+            if request is not None:
+                return request.build_absolute_uri(obj.profile_picture.url)
+            else:
+                return obj.profile_picture.url
+        return None
     
     def validate_username(self, value):
         """
