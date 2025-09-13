@@ -148,6 +148,7 @@ class LoginView(APIView):
                 "status": "success",
                 "status_code": status.HTTP_200_OK,
                 "message": "Login successful",
+                "id": user.id,
                 "data": {
                     "token": token.key
                 }
