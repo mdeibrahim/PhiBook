@@ -19,7 +19,7 @@ class CreatePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response({
@@ -50,7 +50,7 @@ class UpdatePostView(APIView):
     
     def put(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
-        serializer = self.serializer_class(post, data=request.data)
+        serializer = self.serializer_class(post, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -111,7 +111,7 @@ class ViewMyPostsView(APIView):
                 "status_code": 404,
                 "message": "No posts found"
             }, status=404)
-        serializer = self.serializer_class(posts, many=True)
+        serializer = self.serializer_class(posts, many=True, context={'request': request})
         return Response({
             "status": "success",
             "status_code": 200,
@@ -132,7 +132,7 @@ class ViewAllPostsView(APIView):
 
     def get(self, request):
         posts = Post.objects.all()
-        serializer = self.serializer_class(posts, many=True)
+        serializer = self.serializer_class(posts, many=True, context={'request': request})
         return Response({
             "status": "success",
             "status_code": 200,
@@ -153,7 +153,7 @@ class ViewAllPostsView(APIView):
                 "status_code": 404,
                 "message": "No posts found"
             }, status=404)
-        serializer = self.serializer_class(posts, many=True)
+        serializer = self.serializer_class(posts, many=True, context={'request': request})
         return Response({
             "status": "success",
             "status_code": 200,
