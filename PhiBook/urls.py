@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from .views import RootApiView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,7 +20,5 @@ urlpatterns = [
 
 ]
 
-# Serve media files in development
-from django.conf import settings
-from django.conf.urls.static import static
+
 urlpatterns += static(settings.MEDIA_URL, document_root=getattr(settings, 'MEDIA_ROOT', None))
