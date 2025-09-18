@@ -14,17 +14,17 @@ class Post(models.Model):
     def __str__(self):
         return f"Post by {self.user.email} on {self.created_at}"
     
-    @property
-    def total_likes(self):
-        return self.likes.filter(reaction_type='like').count()
+    # @property
+    # def total_likes(self):
+    #     return self.likes.filter(reaction_type='like').count()
 
-    @property
-    def total_unlikes(self):
-        return self.likes.filter(reaction_type='unlike').count()
+    # @property
+    # def total_unlikes(self):
+    #     return self.likes.filter(reaction_type='unlike').count()
     
-    @property
-    def total_comments(self):
-        return self.comments.count()
+    # @property
+    # def total_comments(self):
+    #     return self.comments.count()
 
     
 

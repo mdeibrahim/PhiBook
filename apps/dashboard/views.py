@@ -140,19 +140,26 @@ class ViewAllPostsView(APIView):
             "data": serializer.data
         }, status=200)
     
-    
+from django.db.models import Count, Q    
 class ViewAllPostsView(APIView):
     serializer_class = PostSerializer
     permission_classes = [permissions.AllowAny]
     
     def get(self, request):
-        posts = Post.objects.all()
-        if not posts:
+        posts = Post.objects.select_related('user')\
+            .prefetch_related('comments__user', 'likes')\
+            .annotate(
+                total_likes=Count('likes', filter=Q(likes__reaction_type='like')),
+                total_comments=Count('comments')
+            )
+
+        if not posts.exists():
             return Response({
                 "status": "error",
                 "status_code": 404,
                 "message": "No posts found"
             }, status=404)
+
         serializer = self.serializer_class(posts, many=True, context={'request': request})
         return Response({
             "status": "success",
@@ -160,6 +167,8 @@ class ViewAllPostsView(APIView):
             "message": "Posts retrieved successfully",
             "data": serializer.data
         }, status=200)
+
+
 
 
 class LikeUnlikeView(APIView):
