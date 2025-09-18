@@ -37,14 +37,17 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
-    total_likes = serializers.IntegerField(read_only=True)
+    total_likes = serializers.IntegerField(read_only=True)  # No longer uses property
+    total_comments = serializers.IntegerField(read_only=True)
     image_url = serializers.SerializerMethodField()
-    video_url = serializers.URLField(required=False, allow_null=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'user', 'text', 'image', 'image_url', 'video_url', 'created_at', 'total_likes', 'comments']
-    
+        fields = [
+            'id', 'user', 'text', 'image', 'image_url', 'video_url',
+            'created_at', 'total_likes', 'total_comments', 'comments'
+        ]
+
     def get_image_url(self, obj):
         request = self.context.get('request')
         if obj.image:
