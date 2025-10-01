@@ -134,12 +134,17 @@ class LoginView(APIView):
     **Response:** Authentication token or validation errors
     """
     permission_classes = [permissions.AllowAny]
-    
-    @extend_schema(
-        request=LoginSerializer
-    )
+
 
     def post(self, request):
+        user = CustomUser.objects.filter(email=request.data.get("email")).first()
+        if not user or not user.is_active:
+            return Response({
+                "status": "success",
+                "status_code": status.HTTP_200_OK,
+                "message": "User not found"
+            }, status=status.HTTP_200_OK)
+
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
@@ -155,10 +160,10 @@ class LoginView(APIView):
             }, status=status.HTTP_200_OK)
         return Response({
             "status": "error",
-            "status_code": status.HTTP_400_BAD_REQUEST,
-            "message": "Login failed",
+            "status_code": status.HTTP_404_NOT_FOUND,
+            "message": "user not found",
             "errors": serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_404_NOT_FOUND)
 
 class LogoutView(APIView):
     """

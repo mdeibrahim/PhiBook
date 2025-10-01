@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_spectacular',
     'drf_spectacular_sidecar',
+    'query_counter',
 
     #local apps
     'apps.authentication',
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'PhiBook.middleware.ThreadLocalMiddleware',
+    'query_counter.middleware.DjangoQueryCounterMiddleware',
 ]
 
 ROOT_URLCONF = 'PhiBook.urls'
@@ -113,7 +115,21 @@ DATABASES = {
         },
     }
 }
+##okk
+#sqlite3 database configuration for local development
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / "db.sqlite3",
+#     }
+# }
 
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=config('DATABASE'),
+#         conn_max_age=600
+#     )
+# }
 
 FRONTEND_URL = config("FRONTEND_URL")
 
