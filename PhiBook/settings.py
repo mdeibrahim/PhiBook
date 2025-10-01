@@ -113,7 +113,7 @@ DATABASES = {
         },
     }
 }
-
+##okk
 #sqlite3 database configuration for local development
 # DATABASES = {
 #     'default': {
