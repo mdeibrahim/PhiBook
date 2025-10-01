@@ -114,6 +114,20 @@ DATABASES = {
     }
 }
 
+#sqlite3 database configuration for local development
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=config('DATABASE'),
+#         conn_max_age=600
+#     )
+# }
 
 FRONTEND_URL = config("FRONTEND_URL")
 
