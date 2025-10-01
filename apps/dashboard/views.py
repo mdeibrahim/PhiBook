@@ -157,7 +157,8 @@ class ViewAllPostsView(APIView):
             return Response({
                 "status": "error",
                 "status_code": 404,
-                "message": "No posts found"
+                "message": "No posts found",
+                "data": []
             }, status=404)
 
         serializer = self.serializer_class(posts, many=True, context={'request': request})
